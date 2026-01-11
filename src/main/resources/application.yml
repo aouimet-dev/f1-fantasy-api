@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: f1-fantasy-service
+  
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=30m
+
+server:
+  port: ${PORT:8081}
+
+f1:
+  api:
+    base-url: ${F1_FANTASY_API_URL:https://fantasy-api.formula1.com/f1}
+    timeout: 10000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
