@@ -29,3 +29,8 @@ management:
     web:
       exposure:
         include: health,info,metrics
+
+f1:
+  fantasy:
+    username: ${F1_FANTASY_USERNAME}
+    password: ${F1_FANTASY_PASSWORD}

@@ -37,3 +37,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+f1:
+  fantasy:
+    username: ${F1_FANTASY_USERNAME}
+    password: ${F1_FANTASY_PASSWORD}
