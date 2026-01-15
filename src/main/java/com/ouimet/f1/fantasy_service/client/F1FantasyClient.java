@@ -19,6 +19,7 @@ import com.ouimet.f1.fantasy_service.dto.LoginSessionDTO;
 import com.ouimet.f1.fantasy_service.exception.F1FantasyException;
 import com.ouimet.f1.fantasy_service.properties.AuthenticationProperties;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -29,7 +30,11 @@ import tools.jackson.databind.ObjectMapper;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class F1FantasyClient {
+
+    private static final String AUTH_URL = "https://api.formula1.com/v2/account/subscriber/authenticate/by-password";
+    private static final String PLAYON_URL = "https://play-on.formula1.com/api/identity/playon-session";
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -40,32 +45,13 @@ public class F1FantasyClient {
     private LocalDateTime loginSessionExpiry;
     private Long userId;
 
-    private static final String AUTH_URL = "https://api.formula1.com/v2/account/subscriber/authenticate/by-password";
-    private static final String PLAYON_URL = "https://play-on.formula1.com/api/identity/playon-session";
-
-    public F1FantasyClient(AuthenticationProperties authenticationProperties) {
-        this.authenticationProperties = authenticationProperties;
-        this.restTemplate = new RestTemplate();
-        this.objectMapper = new ObjectMapper();
-    }
-
     /**
      * Initialise le client avec authentification et chargement des données
      */
     public F1FantasyClient init() throws F1FantasyException {
         log.info("Initialisation du client F1 Fantasy...");
 
-        if (authenticationProperties.getUsername() != null && authenticationProperties.getPassword() != null) {
-            login(authenticationProperties.getUsername(), authenticationProperties.getPassword());
-        }
-
-        // Charger les données de base
-        // fetchDriversAndConstructors(false);
-        // fetchGrandsPrix(false);
-
-        // if (isAuthenticated()) {
-        // fetchClientUser(false);
-        // }
+        login(authenticationProperties.getUsername(), authenticationProperties.getPassword());
 
         log.info("Client F1 Fantasy initialisé avec succès");
         return this;
@@ -95,7 +81,7 @@ public class F1FantasyClient {
     /**
      * Authentification avec password
      */
-    private LoginSessionDTO loginWithPassword(String username, String password) throws Exception {
+    private LoginSessionDTO loginWithPassword(String username, String password) throws F1FantasyException {
         Map<String, String> body = new HashMap<>();
         body.put("Login", username);
         body.put("Password", password);
