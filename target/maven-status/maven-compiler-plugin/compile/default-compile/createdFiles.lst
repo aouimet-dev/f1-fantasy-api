@@ -1,0 +1,5 @@
+com\ouimet\f1\fantasy_service\properties\AuthenticationProperties.class
+com\ouimet\f1\fantasy_service\controller\F1Controller.class
+com\ouimet\f1\fantasy_service\service\F1AuthService.class
+com\ouimet\f1\fantasy_service\service\F1AuthService$AuthResult.class
+com\ouimet\f1\fantasy_service\FantasyServiceApplication.class
