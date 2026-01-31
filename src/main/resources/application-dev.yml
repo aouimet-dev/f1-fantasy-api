@@ -32,8 +32,4 @@ management:
   endpoint:
     health:
       show-details: always
-
-f1:
-  fantasy:
-    username: aouimet.dev@gmail.com
-    password: DJX*jra*mjz8mqm@ana
+      
