@@ -1,1 +1,0 @@
-[engine:junit-jupiter]/[class:com.ouimet.f1.fantasy_service.FantasyServiceApplicationTests]/[method:contextLoads()]

@@ -6,5 +6,4 @@ import lombok.Data;
 public class RaceResultDto {
     private Long memberTeamId;
     private Integer points;
-    private Integer position;
 }

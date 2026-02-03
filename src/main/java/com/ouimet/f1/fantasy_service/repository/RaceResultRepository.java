@@ -13,26 +13,33 @@ import com.ouimet.f1.fantasy_service.entity.RaceResult;
 @Repository
 public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
 
-    List<RaceResult> findByRaceId(Long raceId);
+        List<RaceResult> findByRaceId(Long raceId);
 
-    List<RaceResult> findByMemberTeamId(Long memberTeamId);
+        List<RaceResult> findByMemberTeamId(Long memberTeamId);
 
-    Optional<RaceResult> findByRaceIdAndMemberTeamId(Long raceId, Long memberTeamId);
+        Optional<RaceResult> findByRaceIdAndMemberTeamId(Long raceId, Long memberTeamId);
 
-    // Requêtes custom pour les calculs
-    @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
-            "JOIN rr.memberTeam mt " +
-            "WHERE mt.member.id = :memberId")
-    Integer sumPointsByMember(@Param("memberId") Long memberId);
+        // Requêtes custom pour les calculs
+        @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
+                        "JOIN rr.memberTeam mt " +
+                        "WHERE mt.member.id = :memberId")
+        Integer sumPointsByMember(@Param("memberId") Long memberId);
 
-    @Query("SELECT COUNT(DISTINCT rr.race.id) FROM RaceResult rr " +
-            "JOIN rr.memberTeam mt " +
-            "WHERE mt.member.id = :memberId AND rr.race.isCompleted = true")
-    Integer countCompletedRacesByMember(@Param("memberId") Long memberId);
+        @Query("SELECT COUNT(DISTINCT rr.race.id) FROM RaceResult rr " +
+                        "JOIN rr.memberTeam mt " +
+                        "WHERE mt.member.id = :memberId AND rr.race.isCompleted = true")
+        Integer countCompletedRacesByMember(@Param("memberId") Long memberId);
 
-    @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
-            "JOIN rr.memberTeam mt " +
-            "WHERE mt.member.id = :memberId AND rr.race.id = :raceId")
-    Integer sumPointsByMemberAndRace(@Param("memberId") Long memberId,
-            @Param("raceId") Long raceId);
+        @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
+                        "JOIN rr.memberTeam mt " +
+                        "WHERE mt.member.id = :memberId AND rr.race.id = :raceId")
+        Integer sumPointsByMemberAndRace(@Param("memberId") Long memberId,
+                        @Param("raceId") Long raceId);
+
+        @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
+                        "JOIN rr.memberTeam mt " +
+                        "WHERE mt.member.id = :memberId AND rr.race.id = (" +
+                        "  SELECT MAX(r.id) FROM Race r WHERE r.isCompleted = true" +
+                        ")")
+        Integer sumPointsByMemberForLastRace(@Param("memberId") Long memberId);
 }

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ouimet.f1.fantasy_service.entity.Member;
-import com.ouimet.f1.fantasy_service.entity.MemberStanding;
 import com.ouimet.f1.fantasy_service.entity.Race;
+import com.ouimet.f1.fantasy_service.entity.Standing;
 import com.ouimet.f1.fantasy_service.entity.StandingsHistory;
 import com.ouimet.f1.fantasy_service.repository.MemberRepository;
-import com.ouimet.f1.fantasy_service.repository.MemberStandingRepository;
 import com.ouimet.f1.fantasy_service.repository.RaceRepository;
 import com.ouimet.f1.fantasy_service.repository.RaceResultRepository;
+import com.ouimet.f1.fantasy_service.repository.StandingRepository;
 import com.ouimet.f1.fantasy_service.repository.StandingsHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,43 +29,35 @@ public class StandingsService {
 
     private final RaceRepository raceRepository;
     private final MemberRepository memberRepository;
-    private final MemberStandingRepository memberStandingRepository;
+    private final StandingRepository standingRepository;
     private final RaceResultRepository raceResultRepository;
     private final StandingsHistoryRepository standingsHistoryRepository;
 
     /**
-     * Recalcule tous les classements après entrée de résultats
+     * Recalcule le classement global de la saison pour TOUS les membres
+     * et crée un snapshot historique après une course donnée.
+     *
+     * Cette méthode :
+     * 1. Calcule pour chaque membre : points totaux, nombre de courses complétées,
+     * moyenne points/course
+     * 2. Assigne les rangs en triant par points totaux (ordre décroissant)
+     * 3. Sauvegarde le classement global mis à jour
+     * 4. Enregistre un historique (snapshot) du classement à ce moment précis,
+     * incluant les points gagnés dans la course
+     *
+     * @param completedRaceId l'identifiant de la course qui vient d'être complétée
+     *                        (pour l'historique uniquement)
      */
-    public void recalculateStandings(Long raceId) {
-        log.info("Recalculating standings for race {}", raceId);
+    public void recalculateStandings(Long completedRaceId) {
+        log.info("Recalculating standings for race {}", completedRaceId);
 
         // 1. Récupérer tous les membres
         List<Member> members = memberRepository.findAll();
 
-        // 2. Pour chaque membre, calculer le total
-        List<MemberStanding> standings = new ArrayList<>();
-
+        // 2. Pour chaque membre, calculer le classement
+        List<Standing> standings = new ArrayList<>();
         for (Member member : members) {
-            // Somme des points de ses 3 équipes
-            Integer totalPoints = raceResultRepository.sumPointsByMember(member.getId());
-
-            Integer racesCompleted = raceResultRepository.countCompletedRacesByMember(member.getId());
-
-            MemberStanding standing = memberStandingRepository
-                    .findByMemberId(member.getId())
-                    .orElse(new MemberStanding());
-
-            standing.setMember(member);
-            standing.setTotalPoints(totalPoints);
-            standing.setRacesCompleted(racesCompleted);
-            standing.setAveragePointsPerRace(
-                    racesCompleted > 0
-                            ? BigDecimal.valueOf(totalPoints)
-                                    .divide(BigDecimal.valueOf(racesCompleted), 2,
-                                            RoundingMode.HALF_UP)
-                            : BigDecimal.ZERO);
-
-            standings.add(standing);
+            standings.add(computeMemberStats(member));
         }
 
         // 3. Trier par points et assigner les rangs
@@ -76,33 +68,116 @@ public class StandingsService {
         }
 
         // 4. Sauvegarder
-        memberStandingRepository.saveAll(standings);
+        standingRepository.saveAll(standings);
 
         // 5. Sauvegarder dans l'historique
-        saveStandingsHistory(raceId, standings);
+        saveStandingsHistory(completedRaceId, standings);
 
         log.info("Standings recalculated successfully");
     }
 
-    private void saveStandingsHistory(Long raceId, List<MemberStanding> standings) {
-        Race race = raceRepository.findById(raceId).orElseThrow();
+    /**
+     * Sauvegarde un snapshot du classement (historique) après une course.
+     *
+     * @param completedRaceId l'identifiant de la course complétée
+     * @param standings       la liste des classements actuels avec les rangs
+     *                        assignés
+     */
+    private void saveStandingsHistory(Long completedRaceId, List<Standing> standings) {
+        Race race = raceRepository.findById(completedRaceId).orElseThrow();
+        List<StandingsHistory> historicRecords = new ArrayList<>();
 
-        for (MemberStanding standing : standings) {
-            StandingsHistory history = new StandingsHistory();
-            history.setRace(race);
-            history.setMember(standing.getMember());
-            history.setRank(standing.getCurrentRank());
-            history.setTotalPoints(standing.getTotalPoints());
-
-            // Calculer les points gagnés pour cette course
-            Integer racePoints = raceResultRepository
-                    .sumPointsByMemberAndRace(standing.getMember().getId(), raceId);
-            history.setPointsGained(racePoints);
-
-            // Calculer changement de rang (à implémenter)
-            // history.setRankChange(calculateRankChange(...));
-
-            standingsHistoryRepository.save(history);
+        for (Standing standing : standings) {
+            StandingsHistory history = buildStandingsHistoryEntry(standing, race, completedRaceId);
+            historicRecords.add(history);
         }
+
+        standingsHistoryRepository.saveAll(historicRecords);
+    }
+
+    /**
+     * Crée une entrée d'historique pour un membre après une course.
+     *
+     * @param standing        le classement actuel du membre
+     * @param race            la course complétée
+     * @param completedRaceId l'identifiant de la course
+     * @return une entrée StandingsHistory prête à être sauvegardée
+     */
+    private StandingsHistory buildStandingsHistoryEntry(Standing standing, Race race, Long completedRaceId) {
+        StandingsHistory history = new StandingsHistory();
+        history.setRace(race);
+        history.setMember(standing.getMember());
+        history.setRank(standing.getCurrentRank());
+        history.setTotalPoints(standing.getTotalPoints());
+
+        // Calculer les points gagnés pour cette course spécifique
+        Integer racePoints = raceResultRepository
+                .sumPointsByMemberAndRace(standing.getMember().getId(), completedRaceId);
+        history.setPointsGained(racePoints);
+
+        // Calculer le changement de rang par rapport à la course précédente
+        Integer rankChange = calculateRankChange(standing.getMember().getId(), standing.getCurrentRank(),
+                completedRaceId);
+        history.setRankChange(rankChange);
+
+        return history;
+    }
+
+    /**
+     * Calcule le changement de rang d'un membre pour une course.
+     * Comparaison du rang actuel avec le rang de la course précédente.
+     *
+     * @param memberId        l'identifiant du membre
+     * @param currentRank     le rang actuel (après cette course)
+     * @param completedRaceId l'identifiant de la course complétée
+     * @return le changement de rang (positif = montée, négatif = descente, 0 =
+     *         inchangé)
+     */
+    private Integer calculateRankChange(Long memberId, Integer currentRank, Long completedRaceId) {
+        // Chercher le rang du membre à la course précédente
+        Integer previousRank = standingsHistoryRepository
+                .findPreviousRankByMemberAndRace(memberId, completedRaceId)
+                .orElse(0);
+
+        // Le changement est : ancien rang - nouveau rang
+        // Ex: passé de 5 à 3 = +2 (montée de 2 places)
+        return previousRank - currentRank;
+    }
+
+    /**
+     * Calcule les stats d'un membre (points totaux, races, moyenne).
+     * Agrège tous ses points gagnés, compte les courses et calcule la moyenne.
+     *
+     * @param member le membre pour lequel calculer les stats
+     * @return un objet Standing avec points totaux, nombre de courses et moyenne
+     */
+    private Standing computeMemberStats(Member member) {
+        // Somme des points de toutes ses courses
+        Integer totalPoints = raceResultRepository.sumPointsByMember(member.getId());
+
+        // Nombre de courses où il a participé
+        Integer racesCompleted = raceResultRepository.countCompletedRacesByMember(member.getId());
+
+        // Récupérer ou créer son Standing global
+        Standing standing = standingRepository
+                .findByMemberId(member.getId())
+                .orElse(new Standing());
+
+        // Remplir les informations
+        standing.setMember(member);
+        standing.setTotalPoints(totalPoints != null ? totalPoints : 0);
+        standing.setRacesCompleted(racesCompleted != null ? racesCompleted : 0);
+        standing.setAveragePointsPerRace(
+                standing.getRacesCompleted() > 0
+                        ? BigDecimal.valueOf(standing.getTotalPoints())
+                                .divide(BigDecimal.valueOf(standing.getRacesCompleted()), 2,
+                                        RoundingMode.HALF_UP)
+                        : BigDecimal.ZERO);
+
+        // Points gagnés à la dernière course
+        Integer lastRacePoints = raceResultRepository.sumPointsByMemberForLastRace(member.getId());
+        standing.setLastRacePoints(lastRacePoints != null ? lastRacePoints : 0);
+
+        return standing;
     }
 }

@@ -18,11 +18,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "member_standings")
+@Table(name = "standings")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberStanding {
+public class Standing {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -1,10 +1,10 @@
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\controller\AdminController.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\dto\RaceResultDto.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\Member.java
-C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\MemberStanding.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\MemberTeam.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\Race.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\RaceResult.java
+C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\Standing.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\entity\StandingsHistory.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\FantasyServiceApplication.java
 C:\Users\alexa\Documents\Github\f1-fantasy-pool\f1-fantasy-pool-f1-service\src\main\java\com\ouimet\f1\fantasy_service\repository\MemberRepository.java

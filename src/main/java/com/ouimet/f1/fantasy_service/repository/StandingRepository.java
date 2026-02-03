@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ouimet.f1.fantasy_service.entity.MemberStanding;
+import com.ouimet.f1.fantasy_service.entity.Standing;
 
 @Repository
-public interface MemberStandingRepository extends JpaRepository<MemberStanding, Long> {
+public interface StandingRepository extends JpaRepository<Standing, Long> {
 
-    Optional<MemberStanding> findByMemberId(Long memberId);
+    Optional<Standing> findByMemberId(Long memberId);
 
 }
