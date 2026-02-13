@@ -2,7 +2,6 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
-  
   jpa:
     hibernate:
       ddl-auto: update
@@ -10,15 +9,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-secret: ${GOOGLE_CLIENT_SECRET}
 server:
   port: ${PORT:8082}
-
 logging:
   level:
     root: INFO
     '[com.ouimet]': INFO
-
 management:
   endpoints:
     web:
