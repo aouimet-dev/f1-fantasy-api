@@ -2,11 +2,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-FantasyServiceApplication<fantasy-service>",
+            "name": "Spring Boot-FantasyServiceApplication<fantasy-api>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.ouimet.f1.fantasy_service.FantasyServiceApplication",
-            "projectName": "fantasy-service",
+            "projectName": "fantasy-api",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
