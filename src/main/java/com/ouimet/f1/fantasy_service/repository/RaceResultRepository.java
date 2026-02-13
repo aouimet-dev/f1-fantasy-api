@@ -19,6 +19,14 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Long> {
 
         Optional<RaceResult> findByRaceIdAndMemberTeamId(Long raceId, Long memberTeamId);
 
+        // Nouvelles méthodes pour le contrôleur
+        List<RaceResult> findByRaceIdOrderByPointsDesc(Long raceId);
+
+        @Query("SELECT rr FROM RaceResult rr WHERE rr.memberTeam.id = :teamId ORDER BY rr.race.raceNumber ASC")
+        List<RaceResult> findByMemberTeamIdOrderByRaceNumberAsc(@Param("teamId") Long teamId);
+
+        long countByRaceId(Long raceId);
+
         // Requêtes custom pour les calculs
         @Query("SELECT SUM(rr.points) FROM RaceResult rr " +
                         "JOIN rr.memberTeam mt " +

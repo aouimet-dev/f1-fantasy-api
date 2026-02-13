@@ -51,4 +51,15 @@ public class MemberTeamService {
         return memberTeamRepository.findByMemberId(memberId);
     }
 
+    /**
+     * Récupérer une équipe spécifique d'un membre
+     * Vérifie que l'équipe appartient bien au membre
+     */
+    public java.util.Optional<MemberTeam> getTeamByMemberAndTeamId(Long memberId, Long teamId) {
+        log.debug("Fetching team {} for member {}", teamId, memberId);
+
+        return memberTeamRepository.findById(teamId)
+                .filter(team -> team.getMember().getId().equals(memberId));
+    }
+
 }

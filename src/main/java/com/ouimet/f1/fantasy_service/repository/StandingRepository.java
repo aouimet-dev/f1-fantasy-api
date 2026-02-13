@@ -1,5 +1,6 @@
 package com.ouimet.f1.fantasy_service.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ public interface StandingRepository extends JpaRepository<Standing, Long> {
 
     Optional<Standing> findByMemberId(Long memberId);
 
+    List<Standing> findAllByOrderByCurrentRankAsc();
 }

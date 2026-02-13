@@ -180,4 +180,20 @@ public class StandingsService {
 
         return standing;
     }
+
+    /**
+     * Récupérer tous les standings triés par rank
+     */
+    public List<Standing> getAllStandingsSorted() {
+        log.debug("Fetching all standings sorted by currentRank");
+        return standingRepository.findAllByOrderByCurrentRankAsc();
+    }
+
+    /**
+     * Récupérer standing d'un membre
+     */
+    public java.util.Optional<Standing> getStandingByMemberId(Long memberId) {
+        log.debug("Fetching standing for member {}", memberId);
+        return standingRepository.findByMemberId(memberId);
+    }
 }
