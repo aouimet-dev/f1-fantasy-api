@@ -16,3 +16,4 @@ logging:
   level:
     root: INFO
     '[com.ouimet]': INFO
+

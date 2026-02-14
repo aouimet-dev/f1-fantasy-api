@@ -2,7 +2,7 @@ server:
   port: ${PORT:8082}
 app:
   cors:
-    allowed-origins: "${FRONTEND_URL:http://localhost:5175}"
+    allowed-origins: ${FRONTEND_URL:http://localhost:5175}
 spring:
   application:
     name: f1-fantasy-api
