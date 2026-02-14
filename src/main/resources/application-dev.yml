@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/f1_pool
-    username: admin
-    password: admin
-    driver-class-name: org.postgresql.Driver
   sql:
     init:
       mode: always
@@ -23,22 +18,10 @@ spring:
         registration:
           google:
             client-secret: # add your client secret here
-server:
-  port: 8082
-
 logging:
   level:
     root: INFO
     '[com.ouimet]': DEBUG
     '[org.hibernate.SQL]': DEBUG
     '[org.springframework.web]': DEBUG
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'  # Tous les endpoints en dev
-  endpoint:
-    health:
-      show-details: always
       
