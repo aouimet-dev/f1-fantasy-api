@@ -1,6 +1,7 @@
 package com.ouimet.f1.fantasy_service.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class AdminController {
      */
     @PostMapping("/races/{raceId}/results")
     public ResponseEntity<Void> enterRaceResults(
-            @PathVariable Long raceId,
+            @PathVariable UUID raceId,
             @RequestBody List<RaceResultDto> results) {
 
         log.info("Entering results for race {}", raceId);
