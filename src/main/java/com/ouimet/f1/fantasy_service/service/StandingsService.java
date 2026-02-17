@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,7 @@ public class StandingsService {
      * @param completedRaceId l'identifiant de la course qui vient d'être complétée
      *                        (pour l'historique uniquement)
      */
-    public void recalculateStandings(Long completedRaceId) {
+    public void recalculateStandings(UUID completedRaceId) {
         log.info("Recalculating standings for race {}", completedRaceId);
 
         // 1. Récupérer tous les membres
@@ -83,7 +84,7 @@ public class StandingsService {
      * @param standings       la liste des classements actuels avec les rangs
      *                        assignés
      */
-    private void saveStandingsHistory(Long completedRaceId, List<Standing> standings) {
+    private void saveStandingsHistory(UUID completedRaceId, List<Standing> standings) {
         Race race = raceRepository.findById(completedRaceId).orElseThrow();
         List<StandingsHistory> historicRecords = new ArrayList<>();
 
@@ -103,7 +104,7 @@ public class StandingsService {
      * @param completedRaceId l'identifiant de la course
      * @return une entrée StandingsHistory prête à être sauvegardée
      */
-    private StandingsHistory buildStandingsHistoryEntry(Standing standing, Race race, Long completedRaceId) {
+    private StandingsHistory buildStandingsHistoryEntry(Standing standing, Race race, UUID completedRaceId) {
         StandingsHistory history = new StandingsHistory();
         history.setRace(race);
         history.setMember(standing.getMember());
@@ -133,7 +134,7 @@ public class StandingsService {
      * @return le changement de rang (positif = montée, négatif = descente, 0 =
      *         inchangé)
      */
-    private Integer calculateRankChange(Long memberId, Integer currentRank, Long completedRaceId) {
+    private Integer calculateRankChange(UUID memberId, Integer currentRank, UUID completedRaceId) {
         // Chercher le rang du membre à la course précédente
         Integer previousRank = standingsHistoryRepository
                 .findPreviousRankByMemberAndRace(memberId, completedRaceId)
@@ -192,7 +193,7 @@ public class StandingsService {
     /**
      * Récupérer standing d'un membre
      */
-    public java.util.Optional<Standing> getStandingByMemberId(Long memberId) {
+    public java.util.Optional<Standing> getStandingByMemberId(UUID memberId) {
         log.debug("Fetching standing for member {}", memberId);
         return standingRepository.findByMemberId(memberId);
     }

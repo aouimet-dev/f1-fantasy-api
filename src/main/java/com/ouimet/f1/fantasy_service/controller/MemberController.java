@@ -1,5 +1,7 @@
 package com.ouimet.f1.fantasy_service.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ public class MemberController {
      * Récupérer un membre par son ID
      */
     @GetMapping("/{memberId}")
-    public ResponseEntity<Member> getMember(@PathVariable Long memberId) {
+    public ResponseEntity<Member> getMember(@PathVariable UUID memberId) {
         return memberService.getMemberById(memberId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

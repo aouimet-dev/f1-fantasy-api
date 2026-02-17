@@ -1,6 +1,7 @@
 package com.ouimet.f1.fantasy_service.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class MemberTeamService {
     /**
      * Créer une nouvelle équipe pour un membre
      */
-    public MemberTeam createMemberTeam(Long memberId, CreateMemberTeamDto dto) {
+    public MemberTeam createMemberTeam(UUID memberId, CreateMemberTeamDto dto) {
         log.info("Creating team '{}' for member: {}", dto.getTeamName(), memberId);
 
         Member member = memberRepository.findById(memberId)
@@ -41,7 +42,7 @@ public class MemberTeamService {
     /**
      * Récupérer toutes les équipes d'un membre
      */
-    public List<MemberTeam> getMemberTeams(Long memberId) {
+    public List<MemberTeam> getMemberTeams(UUID memberId) {
         log.debug("Fetching teams for member: {}", memberId);
 
         if (!memberRepository.existsById(memberId)) {
@@ -55,7 +56,7 @@ public class MemberTeamService {
      * Récupérer une équipe spécifique d'un membre
      * Vérifie que l'équipe appartient bien au membre
      */
-    public java.util.Optional<MemberTeam> getTeamByMemberAndTeamId(Long memberId, Long teamId) {
+    public java.util.Optional<MemberTeam> getTeamByMemberAndTeamId(UUID memberId, UUID teamId) {
         log.debug("Fetching team {} for member {}", teamId, memberId);
 
         return memberTeamRepository.findById(teamId)

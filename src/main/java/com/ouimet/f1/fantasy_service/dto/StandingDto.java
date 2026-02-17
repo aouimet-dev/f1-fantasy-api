@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * DTO pour un classement (standing) global
@@ -18,7 +19,7 @@ public class StandingDto {
 
     @NotNull
     @JsonProperty("memberId")
-    private Long memberId;
+    private UUID memberId;
 
     @NotNull
     private String memberName;

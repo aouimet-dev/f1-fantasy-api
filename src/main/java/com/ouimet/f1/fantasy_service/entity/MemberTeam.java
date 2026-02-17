@@ -2,6 +2,7 @@ package com.ouimet.f1.fantasy_service.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -26,8 +27,8 @@ import lombok.NoArgsConstructor;
 public class MemberTeam {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)

@@ -1,6 +1,7 @@
 package com.ouimet.f1.fantasy_service.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class MemberTeamController {
      */
     @PostMapping
     public ResponseEntity<MemberTeam> createMemberTeam(
-            @PathVariable Long memberId,
+            @PathVariable UUID memberId,
             @RequestBody CreateMemberTeamDto dto) {
 
         MemberTeam savedTeam = memberTeamService.createMemberTeam(memberId, dto);
@@ -40,7 +41,7 @@ public class MemberTeamController {
      * Récupérer toutes les équipes d'un membre
      */
     @GetMapping
-    public ResponseEntity<List<MemberTeam>> getMemberTeams(@PathVariable Long memberId) {
+    public ResponseEntity<List<MemberTeam>> getMemberTeams(@PathVariable UUID memberId) {
         List<MemberTeam> teams = memberTeamService.getMemberTeams(memberId);
         return ResponseEntity.ok(teams);
     }

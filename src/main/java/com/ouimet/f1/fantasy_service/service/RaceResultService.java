@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class RaceResultService {
     private final StandingsService standingsService;
 
     @Transactional
-    public void enterRaceResults(List<RaceResultDto> results, Long raceId) {
+    public void enterRaceResults(List<RaceResultDto> results, UUID raceId) {
         // Trier les résultats par points (décroissant) pour calculer les positions
         List<RaceResultDto> sortedResults = results.stream()
                 .sorted((r1, r2) -> r2.getPoints().compareTo(r1.getPoints()))
@@ -63,7 +64,7 @@ public class RaceResultService {
     /**
      * Récupérer résultats pour une course, triés par points DESC
      */
-    public List<RaceResult> getResultsByRaceIdSorted(Long raceId) {
+    public List<RaceResult> getResultsByRaceIdSorted(UUID raceId) {
         log.debug("Fetching results for race {}, sorted by points", raceId);
         return raceResultRepository.findByRaceIdOrderByPointsDesc(raceId);
     }
@@ -71,7 +72,7 @@ public class RaceResultService {
     /**
      * Récupérer résultats pour une équipe, triés par race order (chronologically)
      */
-    public List<RaceResult> getResultsByTeamIdSorted(Long teamId) {
+    public List<RaceResult> getResultsByTeamIdSorted(UUID teamId) {
         log.debug("Fetching results for team {}, chronologically", teamId);
         return raceResultRepository.findByMemberTeamIdOrderByRaceNumberAsc(teamId);
     }
@@ -79,7 +80,7 @@ public class RaceResultService {
     /**
      * Compter résultats pour une course
      */
-    public long countResultsByRaceId(Long raceId) {
+    public long countResultsByRaceId(UUID raceId) {
         log.debug("Counting results for race {}", raceId);
         return raceResultRepository.countByRaceId(raceId);
     }
@@ -87,7 +88,7 @@ public class RaceResultService {
     /**
      * Calculer performance d'une équipe
      */
-    public TeamPerformanceDto calculateTeamPerformance(Long teamId) {
+    public TeamPerformanceDto calculateTeamPerformance(UUID teamId) {
         log.debug("Calculating performance for team {}", teamId);
 
         List<RaceResult> results = raceResultRepository.findByMemberTeamId(teamId);
