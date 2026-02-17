@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ouimet.f1.fantasy_service.dto.CreateMemberDto;
@@ -39,6 +40,13 @@ public class MemberController {
     @GetMapping("/{memberId}")
     public ResponseEntity<Member> getMember(@PathVariable UUID memberId) {
         return memberService.getMemberById(memberId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<Member> getMemberByEmail(@RequestParam String email) {
+        return memberService.getMemberByEmail(email)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

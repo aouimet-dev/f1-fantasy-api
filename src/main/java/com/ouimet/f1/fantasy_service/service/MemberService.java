@@ -41,6 +41,14 @@ public class MemberService {
     }
 
     /**
+     * Récupérer un membre par son email
+     */
+    public Optional<Member> getMemberByEmail(String email) {
+        log.debug("Fetching member by email: {}", email);
+        return memberRepository.findByEmailIgnoreCase(email);
+    }
+
+    /**
      * Vérifier si un membre existe
      */
     public boolean memberExists(UUID memberId) {
