@@ -44,11 +44,6 @@ public class MemberTeamService {
      */
     public List<MemberTeam> getMemberTeams(UUID memberId) {
         log.debug("Fetching teams for member: {}", memberId);
-
-        if (!memberRepository.existsById(memberId)) {
-            throw new IllegalArgumentException("Member not found: " + memberId);
-        }
-
         return memberTeamRepository.findByMemberId(memberId);
     }
 
