@@ -12,12 +12,6 @@ spring:
       hibernate:
         '[format_sql]': true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-secret: # add your client secret here
 logging:
   level:
     root: INFO
