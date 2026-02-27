@@ -10,6 +10,7 @@ import com.ouimet.f1.fantasy_service.repository.RaceRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service pour gérer les courses
@@ -40,7 +41,7 @@ public class RaceService {
     /**
      * Récupérer une course par ID
      */
-    public Optional<Race> getRaceById(Long raceId) {
+    public Optional<Race> getRaceById(UUID raceId) {
         log.debug("Fetching race {}", raceId);
         return raceRepository.findById(raceId);
     }

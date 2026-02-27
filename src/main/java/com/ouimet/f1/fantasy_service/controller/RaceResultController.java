@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -57,8 +58,8 @@ public class RaceResultController {
      */
     @GetMapping("/api/members/{memberId}/teams/{teamId}/results")
     public ResponseEntity<List<RaceResultDetailDto>> getTeamResults(
-            @PathVariable Long memberId,
-            @PathVariable Long teamId) {
+            @PathVariable UUID memberId,
+            @PathVariable UUID teamId) {
 
         log.debug("Fetching results for team {} of member {}", teamId, memberId);
 
@@ -88,8 +89,8 @@ public class RaceResultController {
      */
     @GetMapping("/api/members/{memberId}/teams/{teamId}/performance")
     public ResponseEntity<TeamPerformanceDto> getTeamPerformance(
-            @PathVariable Long memberId,
-            @PathVariable Long teamId) {
+            @PathVariable UUID memberId,
+            @PathVariable UUID teamId) {
 
         log.debug("Fetching performance stats for team {} of member {}", teamId, memberId);
 

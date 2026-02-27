@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * DTO pour performance d'une équipe
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 public class TeamPerformanceDto {
 
     @NotNull
-    private Long teamId;
+    private UUID teamId;
 
     @NotNull
     private String teamName;

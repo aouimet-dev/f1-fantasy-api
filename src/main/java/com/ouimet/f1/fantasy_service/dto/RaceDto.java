@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * DTO pour une course F1
@@ -20,7 +21,7 @@ public class RaceDto {
 
     @NotNull
     @JsonProperty("raceId")
-    private Long id;
+    private UUID id;
 
     @NotNull
     @Min(1)

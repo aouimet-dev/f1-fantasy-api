@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * DTO pour un résultat détaillé d'une équipe pour une course
@@ -16,16 +17,16 @@ import java.time.LocalDateTime;
 public class RaceResultDetailDto {
 
     @NotNull
-    private Long raceResultId;
+    private UUID raceResultId;
 
     @NotNull
-    private Long raceId;
+    private UUID raceId;
 
     @NotNull
     private String raceName;
 
     @NotNull
-    private Long memberTeamId;
+    private UUID memberTeamId;
 
     @NotNull
     private String teamName;

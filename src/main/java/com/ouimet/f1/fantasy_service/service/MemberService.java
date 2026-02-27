@@ -1,6 +1,7 @@
 package com.ouimet.f1.fantasy_service.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -34,15 +35,23 @@ public class MemberService {
     /**
      * Récupérer un membre par son ID
      */
-    public Optional<Member> getMemberById(Long memberId) {
+    public Optional<Member> getMemberById(UUID memberId) {
         log.debug("Fetching member: {}", memberId);
         return memberRepository.findById(memberId);
     }
 
     /**
+     * Récupérer un membre par son email
+     */
+    public Optional<Member> getMemberByEmail(String email) {
+        log.debug("Fetching member by email: {}", email);
+        return memberRepository.findByEmailIgnoreCase(email);
+    }
+
+    /**
      * Vérifier si un membre existe
      */
-    public boolean memberExists(Long memberId) {
+    public boolean memberExists(UUID memberId) {
         return memberRepository.existsById(memberId);
     }
 

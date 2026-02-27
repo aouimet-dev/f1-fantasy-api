@@ -2,6 +2,7 @@ package com.ouimet.f1.fantasy_service.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,13 +12,13 @@ import org.springframework.stereotype.Repository;
 import com.ouimet.f1.fantasy_service.entity.StandingsHistory;
 
 @Repository
-public interface StandingsHistoryRepository extends JpaRepository<StandingsHistory, Long> {
+public interface StandingsHistoryRepository extends JpaRepository<StandingsHistory, UUID> {
 
-    List<StandingsHistory> findByRaceIdOrderByRank(Long raceId);
+    List<StandingsHistory> findByRaceIdOrderByRank(UUID raceId);
 
-    List<StandingsHistory> findByMemberIdOrderByRaceId(Long memberId);
+    List<StandingsHistory> findByMemberIdOrderByRaceRaceDate(UUID memberId);
 
-    Optional<StandingsHistory> findByRaceIdAndMemberId(Long raceId, Long memberId);
+    Optional<StandingsHistory> findByRaceIdAndMemberId(UUID raceId, UUID memberId);
 
     /**
      * Trouve le rang du membre à la course immédiatement avant la course spécifiée.
@@ -40,6 +41,6 @@ public interface StandingsHistoryRepository extends JpaRepository<StandingsHisto
             )
             """, nativeQuery = true)
     Optional<Integer> findPreviousRankByMemberAndRace(
-            @Param("memberId") Long memberId,
-            @Param("completedRaceId") Long completedRaceId);
+            @Param("memberId") UUID memberId,
+            @Param("completedRaceId") UUID completedRaceId);
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -103,7 +104,7 @@ public class RaceController {
      * @status 404 NOT FOUND - Si race pas trouvée
      */
     @GetMapping("/{raceId}")
-    public ResponseEntity<RaceDto> getRaceById(@PathVariable Long raceId) {
+    public ResponseEntity<RaceDto> getRaceById(@PathVariable UUID raceId) {
         log.debug("Fetching race {}", raceId);
         return raceService.getRaceById(raceId)
                 .map(race -> ResponseEntity.ok(mapToDto(race)))
@@ -122,7 +123,7 @@ public class RaceController {
      * @status 404 NOT FOUND - Si race pas trouvée
      */
     @GetMapping("/{raceId}/results")
-    public ResponseEntity<List<RaceResultDetailDto>> getRaceResults(@PathVariable Long raceId) {
+    public ResponseEntity<List<RaceResultDetailDto>> getRaceResults(@PathVariable UUID raceId) {
         log.debug("Fetching results for race {}", raceId);
 
         // Vérifier que la course existe

@@ -1,3 +1,13 @@
 spring:
   datasource:
     url: jdbc:tc:postgresql:9.6.8:///f1_pool
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+app:
+  cors:
+    frontend-url: http://localhost:3000 # Any URL for now

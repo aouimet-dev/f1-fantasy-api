@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +71,7 @@ public class StandingsController {
      * @status 404 NOT FOUND - Si aucun standing pour ce member
      */
     @GetMapping("/{memberId}")
-    public ResponseEntity<StandingDto> getMemberStanding(@PathVariable Long memberId) {
+    public ResponseEntity<StandingDto> getMemberStanding(@PathVariable UUID memberId) {
         log.debug("Fetching standing for member {}", memberId);
         return standingsService.getStandingByMemberId(memberId)
                 .map(standing -> ResponseEntity.ok(mapToDto(standing)))
