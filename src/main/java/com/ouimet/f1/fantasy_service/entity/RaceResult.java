@@ -14,15 +14,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "race_results")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class RaceResult {
 
     @Id
@@ -34,12 +28,13 @@ public class RaceResult {
     private Race race;
 
     @ManyToOne
-    @JoinColumn(name = "member_team_id", nullable = false)
-    private MemberTeam memberTeam;
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
     @Column(nullable = false)
     private Integer points = 0;
 
+    @Column(nullable = false)
     private Integer position;
 
     @CreationTimestamp
@@ -47,4 +42,62 @@ public class RaceResult {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public LocalDateTime getEnteredAt() {
+        return enteredAt;
+    }
+
+    public void setEnteredAt(LocalDateTime enteredAt) {
+        this.enteredAt = enteredAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    
 }

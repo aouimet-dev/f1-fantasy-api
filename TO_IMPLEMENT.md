@@ -1,0 +1,1 @@
+- Quand un utilisateur se connecte et crée son compte, lui proposer

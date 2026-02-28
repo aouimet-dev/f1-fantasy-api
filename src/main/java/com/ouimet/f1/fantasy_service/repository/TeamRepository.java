@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ouimet.f1.fantasy_service.entity.Race;
+import com.ouimet.f1.fantasy_service.entity.Team;
 
 @Repository
-public interface RaceRepository extends JpaRepository<Race, UUID> {
+public interface TeamRepository extends JpaRepository<Team, UUID> {
 }
