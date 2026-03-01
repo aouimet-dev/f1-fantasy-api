@@ -3,16 +3,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.ouimet.f1</groupId>
 	<artifactId>fantasy-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fantasy-api</name>
+
 	<url />
 	<licenses>
 		<license />
@@ -26,11 +29,16 @@
 		<tag />
 		<url />
 	</scm>
+
 	<properties>
 		<java.version>25</java.version>
-		<spring-modulith.version>2.0.3</spring-modulith.version>
 	</properties>
+
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
@@ -82,5 +90,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

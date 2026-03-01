@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,7 +19,8 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @JoinColumn(name = "member_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "member_email", referencedColumnName = "email", nullable = false, unique = true)
     private Member member;
 
     @Column(nullable = false)
@@ -26,7 +28,7 @@ public class Team {
 
     public Team() {
     }
-    
+
     public Team(Member member, String teamName) {
         this.member = member;
         this.teamName = teamName;
