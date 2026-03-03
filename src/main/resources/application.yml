@@ -1,11 +1,20 @@
 server:
   port: 8082
-app:
-  cors:
-    frontend-url: http://localhost:5175
 spring:
   application:
     name: f1-fantasy-api
+  security:
+    oauth2:
+      client:
+        provider:
+          auth0:
+            issuer-uri: ${AUTH0_ISSUER_URI}
+        registration:
+          auth0:
+            provider: auth0
+            client-id: ${AUTH0_CLIENT_ID}
+            client-secret: ${AUTH0_CLIENT_SECRET}
+            scope: openid,profile,email
   jpa:
     properties:
       hibernate:
@@ -16,14 +25,6 @@ spring:
     password: admin
     url: jdbc:postgresql://localhost:5432/f1_pool
     driver-class-name: org.postgresql.Driver
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            scope: email,profile,openid
 logging:
   level:
     root: INFO
