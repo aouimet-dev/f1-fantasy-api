@@ -11,8 +11,9 @@ app:
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
-  ollama:
-    base-url: ${OLLAMA_BASE_URL}
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL}
   jpa:
     hibernate:
       ddl-auto: update

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ouimet.f1.fantasy_service.dto.CreateMemberDto;
 import com.ouimet.f1.fantasy_service.dto.MemberDto;
 import com.ouimet.f1.fantasy_service.entity.Member;
-import com.ouimet.f1.fantasy_service.exception.MemberNotFoundException;
 import com.ouimet.f1.fantasy_service.mapper.Mapper;
 import com.ouimet.f1.fantasy_service.service.MemberService;
 

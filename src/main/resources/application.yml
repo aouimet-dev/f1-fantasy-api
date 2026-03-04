@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: f1-fantasy-api
+  ai:
+    ollama:
+      chat:
+        model: llama3.2:1b
   security:
     oauth2:
       client:
